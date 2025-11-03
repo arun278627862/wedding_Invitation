@@ -217,21 +217,22 @@
 
     /* Header */
     .hero{
-      text-align:center;padding:60px 50px 50px;
+      text-align:center;padding:70px 50px 50px;
       background:linear-gradient(180deg,var(--ivory) 0%, #fef5e7 100%);
       position:relative;z-index:2;
       border-bottom:3px solid var(--gold);
       background-image:radial-gradient(circle at center, rgba(212,175,55,.05) 0%, transparent 70%);
     }
     .hero::before{
-      content:'☸';position:absolute;top:20px;left:50%;
+      content:'☸';position:absolute;top:10px;left:50%;
       transform:translateX(-50%);
-      font-size:48px;opacity:0.4;z-index:1;
+      font-size:36px;opacity:0.35;z-index:0;
       color:var(--gold);
       text-shadow:0 0 15px rgba(212,175,55,.6),
                   0 0 30px rgba(212,175,55,.4);
       font-family:serif;
       filter:drop-shadow(0 2px 8px rgba(128,0,32,.2));
+      pointer-events:none;
     }
     .hero::after{
       content:'❀';position:absolute;bottom:-15px;left:50%;
@@ -241,7 +242,7 @@
       text-shadow:0 0 10px rgba(212,175,55,.5);
     }
     h1{
-      margin:20px 0 15px 0;font-size:52px;color:var(--maroon);
+      margin:30px 0 15px 0;font-size:52px;color:var(--maroon);
       letter-spacing:4px;font-family:var(--font-serif);font-weight:700;
       text-transform:uppercase;
       text-shadow:2px 2px 4px rgba(128,0,32,.2);
@@ -310,7 +311,7 @@
 
     /* Content layout */
     .content{
-      padding:50px 50px 40px;position:relative;z-index:2;
+      padding:50px 50px 50px;position:relative;z-index:2;
       background:var(--cream);
     }
     .card{
@@ -444,21 +445,23 @@
 
     /* Footer */
     .footer{
-      padding:40px 50px;border-top:3px solid var(--gold);
+      padding:50px 50px 40px;border-top:3px solid var(--gold);
       text-align:center;background:var(--ivory);
       position:relative;z-index:2;
       background-image:radial-gradient(circle at center, rgba(212,175,55,.05) 0%, transparent 70%);
     }
     .footer::before{
-      content:'☸';position:absolute;top:-18px;left:50%;
+      content:'☸';position:absolute;top:-20px;left:50%;
       transform:translateX(-50%);
       background:var(--ivory);padding:0 20px;
-      font-size:32px;
+      font-size:28px;
       color:var(--gold);
       text-shadow:0 0 12px rgba(212,175,55,.6),
                   0 0 20px rgba(212,175,55,.4);
       font-family:serif;
       filter:drop-shadow(0 2px 6px rgba(128,0,32,.2));
+      z-index:1;
+      pointer-events:none;
     }
     .bless{
       color:var(--maroon);font-size:17px;
