@@ -213,6 +213,7 @@
       text-transform:uppercase;letter-spacing:1px;
       margin-top:3px;font-weight:500;
     }
+    
 
     /* Header */
     .hero{
@@ -223,9 +224,14 @@
       background-image:radial-gradient(circle at center, rgba(212,175,55,.05) 0%, transparent 70%);
     }
     .hero::before{
-      content:'🕉️';position:absolute;top:20px;left:50%;
+      content:'☸';position:absolute;top:20px;left:50%;
       transform:translateX(-50%);
-      font-size:32px;opacity:0.3;z-index:1;
+      font-size:48px;opacity:0.4;z-index:1;
+      color:var(--gold);
+      text-shadow:0 0 15px rgba(212,175,55,.6),
+                  0 0 30px rgba(212,175,55,.4);
+      font-family:serif;
+      filter:drop-shadow(0 2px 8px rgba(128,0,32,.2));
     }
     .hero::after{
       content:'❀';position:absolute;bottom:-15px;left:50%;
@@ -444,10 +450,15 @@
       background-image:radial-gradient(circle at center, rgba(212,175,55,.05) 0%, transparent 70%);
     }
     .footer::before{
-      content:'🕉️';position:absolute;top:-18px;left:50%;
+      content:'☸';position:absolute;top:-18px;left:50%;
       transform:translateX(-50%);
       background:var(--ivory);padding:0 20px;
-      font-size:24px;
+      font-size:32px;
+      color:var(--gold);
+      text-shadow:0 0 12px rgba(212,175,55,.6),
+                  0 0 20px rgba(212,175,55,.4);
+      font-family:serif;
+      filter:drop-shadow(0 2px 6px rgba(128,0,32,.2));
     }
     .bless{
       color:var(--maroon);font-size:17px;
@@ -486,7 +497,8 @@
         padding:40px 20px 35px;
       }
       .hero::before{
-        font-size:24px;top:10px;
+        font-size:32px;top:10px;
+        opacity:0.35;
       }
       .hero::after{
         font-size:20px;padding:0 15px;
@@ -660,8 +672,9 @@
         padding:30px 15px 25px;
       }
       .hero::before{
-        font-size:20px;
+        font-size:28px;
         top:8px;
+        opacity:0.3;
       }
       .hero::after{
         font-size:18px;
@@ -904,7 +917,7 @@
     
   </style>
 </head>
-  <body>
+<body>
   <nav class="navbar">
     <div class="navbar-brand">
       <span class="navbar-brand-icon">💑</span>
@@ -954,24 +967,24 @@
         <div class="couple-names">
           <div>
             <div class="name-label">वर</div>
-            <div class="name">Amrendra Kumar</div>
-            <div class="address">Village - Majharia, Post - Maida<br/>Thana - Kothi, District - Sitamarhi</div>
+            <div class="name">AMARENDRA KUMAR</div>
+            <div class="address">Village - Dhankhiriya, Post - Ghechua<br/>Thana - Bakhira, District - Sant Kabir Nagar</div>
           </div>
           <div class="and">💑</div>
           <div>
             <div class="name-label">वधू</div>
-            <div class="name">Poonam</div>
-            <div class="address">Village - Jaisinghpur, Post - Maida<br/>Thana - Kothi, District - Sitamarhi</div>
-          </div>
-        </div>
-              </div>
+            <div class="name">POONAM</div>
+            <div class="address">Village - Kodari, Post - Bakhira<br/>Thana - Bakhira, District - Sant Kabir Singh</div>
             </div>
+          </div>
+            </div>
+          </div>
 
       <div class="section-divider">❀ ❀ ❀</div>
 
       <div class="card card-animate">
         <h2>Wedding Ceremony</h2>
-        <div class="schedule">
+          <div class="schedule">
             <div class="item">
             <div class="date">24<small>November 2025</small></div>
             <div class="event-title">Haldi Ceremony</div>
@@ -981,16 +994,16 @@
             <div class="item">
             <div class="date">25<small>November 2025</small></div>
             <div class="event-title">Wedding Ceremony</div>
-            <div class="event-details">Time: Evening 8:00 PM<br/>Venue: Same Location</div>
-          </div>
+            <div class="event-details">Time: Evening 8:00 PM<br/>Venue: Village- Kodari</div>
+            </div>
 
-          <div class="item">
+            <div class="item">
             <div class="date">26<small>November 2025</small></div>
             <div class="event-title">Vidaai & Return Journey</div>
-            <div class="event-details">Time: As Per Schedule</div>
-        </div>
-        </div>
-      </div>
+            <div class="event-details">Time: 9:00 AM</div>
+              </div>
+            </div>
+          </div>
 
       <div class="section-divider">❀ ❀ ❀</div>
 
@@ -1001,21 +1014,21 @@
 
       <div class="card card-animate">
         <div class="contact-info">
-          <div class="contact-name">Mr. Amrendra Kumar</div>
-          <p>Village - Majharia, Post - Maida<br/>Thana - Kothi, District - Sitamarhi</p>
-          <div class="phone">Mobile: <strong>8601058607</strong> / <strong>7084574598</strong></div>
-        </div>
+          <div class="contact-name">Mr. AMARENDRA KUMAR</div>
+          <p>Village - Dhankhiriya, Post - Ghechua<br/>Thana - Bakhira, District - Sant Kabir Nagar</p>
+          <div class="phone">Mobile: <strong>7084574596</strong> / <strong>8601056607</strong></div>
+          </div>
         </div>
 
       <div class="card card-animate">
         <p style="font-size:13px;color:var(--muted);font-style:italic">Please arrive on time. For parking and accommodation assistance, please contact the numbers provided above.</p>
         <p style="margin-top:15px;color:var(--gold-dark);font-weight:500"><strong>Request:</strong> We request your presence with family to bless us on this auspicious occasion.</p>
-      </div>
+        </div>
     </div>
 
     <div class="footer">
       <div class="bless">We seek your blessings • आपका आशीर्वाद चाहिए</div>
-      <div class="copyright">© 2025 Amrendra Family</div>
+      <div class="copyright">© By AMARENDRA Friend</div>
     </div>
 
   </div>
@@ -1283,6 +1296,7 @@
         }
       }, 5000);
     })();
+    
   </script>
 </body>
 </html>
