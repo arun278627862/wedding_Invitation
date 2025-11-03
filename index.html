@@ -2,24 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Wedding Invitation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#fef9f0; --card:#ffffff; --accent:#b8860b; --muted:#666;
-      --accent2:#c9a961; --gold:#d4af37; --rose:#d4a574; --gold-light:#faf8f3;
-      --cream:#fffef8; --gold-dark:#b8860b;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --bg:#2a0a0a; --card:#f5f0e8; --accent:#d4af37; --muted:#5c3a21;
+      --maroon:#800020; --burgundy:#722f37; --saffron:#ff9933;
+      --gold:#ffd700; --gold-dark:#b8860b; --red:#c41e3a;
+      --cream:#fef5e7; --ivory:#fffef0;
+      font-family: 'Cormorant Garamond', 'Playfair Display', serif;
       --font-serif: 'Playfair Display', serif;
     }
     *{box-sizing:border-box}
+    html{
+      -webkit-text-size-adjust:100%;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
     body{
       margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,#fef9f0 0%, #fffef8 50%, #faf8f3 100%);
-      padding:24px;position:relative;overflow-x:hidden;
+      background:linear-gradient(135deg,#2a0a0a 0%, #3d1616 50%, #2a0a0a 100%);
+      padding:100px 24px 40px;position:relative;overflow-x:hidden;
+      background-image:radial-gradient(circle at 20% 50%, rgba(212,175,55,.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(128,0,32,.1) 0%, transparent 50%);
+      -webkit-overflow-scrolling:touch;
+      padding-top:80px;
     }
 
     /* Animation Canvas */
@@ -28,82 +41,265 @@
       pointer-events:none;z-index:1;
     }
 
-    .invite{
-      width:700px;max-width:100%;background:var(--cream);
-      box-shadow:0 20px 60px rgba(184,134,11,.15), 0 0 0 1px rgba(212,175,55,.2);
-      overflow:hidden;position:relative;z-index:2;
-      transform-origin:center;animation:pop .8s ease;
-      border:3px solid var(--gold);
-      padding:0;
+    /* Video-like Reveal Animation */
+    .reveal-overlay{
+      position:fixed;top:0;left:0;width:100vw;height:100vh;
+      background:var(--bg);z-index:999;
+      clip-path:circle(0% at 50% 50%);
+      animation:revealCircle 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+      pointer-events:none;
     }
-    @keyframes pop{from{transform:scale(.98) translateY(10px);opacity:0}to{transform:none;opacity:1}}
+    @keyframes revealCircle{
+      0%{clip-path:circle(0% at 50% 50%);}
+      100%{clip-path:circle(150% at 50% 50%);opacity:0;}
+    }
 
-    /* Decorative Border */
+    .invite{
+      width:750px;max-width:100%;background:var(--ivory);
+      box-shadow:0 30px 80px rgba(0,0,0,.5), 
+                 0 0 0 2px var(--gold),
+                 0 0 0 4px var(--maroon),
+                 0 0 0 6px var(--gold),
+                 inset 0 0 60px rgba(212,175,55,.1);
+      overflow:hidden;position:relative;z-index:2;
+      transform-origin:center;
+      opacity:0;
+      animation:fadeInScale 0.8s ease 0.4s forwards;
+      border:4px solid var(--gold);
+      padding:0;
+      perspective:1000px;
+    }
+    @keyframes fadeInScale{
+      from{
+        opacity:0;
+        transform:scale(0.95) translateY(20px) rotateX(5deg);
+      }
+      to{
+        opacity:1;
+        transform:scale(1) translateY(0) rotateX(0deg);
+      }
+    }
+    
+    /* Circular decorative frame animation */
+    .decorative-frame{
+      position:absolute;top:50%;left:50%;
+      transform:translate(-50%, -50%);
+      width:800px;height:800px;
+      border:3px solid var(--gold);
+      border-radius:50%;
+      opacity:0;
+      scale:0;
+      animation:frameReveal 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s forwards;
+      pointer-events:none;
+      z-index:0;
+    }
+    @keyframes frameReveal{
+      0%{
+        opacity:0;
+        transform:translate(-50%, -50%) scale(0) rotate(0deg);
+      }
+      50%{
+        opacity:0.3;
+      }
+      100%{
+        opacity:0.15;
+        transform:translate(-50%, -50%) scale(1) rotate(360deg);
+      }
+    }
+
+    /* Indian Decorative Border Pattern */
     .invite::before{
       content:'';position:absolute;top:0;left:0;right:0;bottom:0;
       background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(212,175,55,.08) 2px, rgba(212,175,55,.08) 4px);
+        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(212,175,55,.15) 10px, rgba(212,175,55,.15) 12px),
+        repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(212,175,55,.15) 10px, rgba(212,175,55,.15) 12px);
       pointer-events:none;z-index:1;
+    }
+    
+    /* Mandala/Paisley decorative corner elements */
+    .invite::after{
+      content:'❀';position:absolute;top:15px;left:15px;
+      font-size:24px;color:var(--gold);z-index:3;opacity:0.6;
+      animation:twinkle 3s ease-in-out infinite;
+    }
+    @keyframes twinkle{
+      0%,100%{opacity:0.6;transform:scale(1);}
+      50%{opacity:1;transform:scale(1.1);}
+    }
+    
+    .corner-decoration{
+      position:absolute;width:60px;height:60px;
+      border:2px solid var(--gold);border-radius:50%;
+      z-index:3;opacity:0.4;
+    }
+    .corner-decoration.top-right{top:15px;right:15px;border-left:none;border-bottom:none;}
+    .corner-decoration.bottom-left{bottom:15px;left:15px;border-right:none;border-top:none;}
+    .corner-decoration.bottom-right{bottom:15px;right:15px;border-left:none;border-top:none;}
+    
+    /* Navbar with Countdown Timer */
+    .navbar{
+      position:fixed;top:0;left:0;right:0;
+      background:linear-gradient(135deg, var(--maroon) 0%, var(--burgundy) 100%);
+      border-bottom:3px solid var(--gold);
+      padding:12px 30px;
+      z-index:1000;
+      box-shadow:0 4px 20px rgba(0,0,0,.5),
+                 0 0 10px rgba(212,175,55,.3);
+      display:flex;align-items:center;justify-content:space-between;
+      backdrop-filter:blur(10px);
+      opacity:0;
+      transform:translateY(-100%);
+      animation:navbarSlideDown 0.8s ease 0.3s forwards;
+    }
+    @keyframes navbarSlideDown{
+      from{
+        opacity:0;
+        transform:translateY(-100%);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+    
+    .navbar-brand{
+      display:flex;align-items:center;gap:10px;
+    }
+    .navbar-brand-icon{
+      font-size:24px;
+      filter:drop-shadow(0 0 8px rgba(212,175,55,.6));
+    }
+    .navbar-brand-text{
+      color:var(--gold);font-size:18px;
+      font-weight:700;font-family:var(--font-serif);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      text-shadow:0 0 10px rgba(212,175,55,.5);
+    }
+    
+    .countdown-timer{
+      display:flex;align-items:center;gap:15px;
+      background:rgba(0,0,0,.2);
+      border:2px solid var(--gold);
+      border-radius:10px;
+      padding:8px 15px;
+    }
+    .countdown-label{
+      color:var(--gold);font-size:11px;
+      text-transform:uppercase;letter-spacing:2px;
+      font-weight:600;
+      font-family:var(--font-serif);
+      white-space:nowrap;
+    }
+    .countdown-time{
+      display:flex;gap:8px;align-items:center;
+    }
+    .countdown-unit{
+      background:rgba(255,255,255,.1);
+      border:1px solid var(--gold);
+      border-radius:6px;
+      padding:6px 8px;
+      min-width:42px;
+      text-align:center;
+    }
+    .countdown-number{
+      color:var(--gold);font-size:20px;
+      font-weight:700;font-family:var(--font-serif);
+      line-height:1;
+      text-shadow:0 0 8px rgba(212,175,55,.6);
+    }
+    .countdown-label-unit{
+      color:rgba(255,255,255,.9);font-size:8px;
+      text-transform:uppercase;letter-spacing:1px;
+      margin-top:3px;font-weight:500;
     }
 
     /* Header */
     .hero{
-      text-align:center;padding:50px 40px 40px;
-      background:linear-gradient(180deg,var(--cream) 0%, #fffef8 100%);
+      text-align:center;padding:60px 50px 50px;
+      background:linear-gradient(180deg,var(--ivory) 0%, #fef5e7 100%);
       position:relative;z-index:2;
-      border-bottom:2px solid rgba(212,175,55,.2);
+      border-bottom:3px solid var(--gold);
+      background-image:radial-gradient(circle at center, rgba(212,175,55,.05) 0%, transparent 70%);
+    }
+    .hero::before{
+      content:'🕉️';position:absolute;top:20px;left:50%;
+      transform:translateX(-50%);
+      font-size:32px;opacity:0.3;z-index:1;
     }
     .hero::after{
-      content:'✦';position:absolute;bottom:-12px;left:50%;
+      content:'❀';position:absolute;bottom:-15px;left:50%;
       transform:translateX(-50%);
-      background:var(--cream);padding:0 20px;
-      color:var(--gold);font-size:24px;
+      background:var(--ivory);padding:0 25px;
+      color:var(--gold);font-size:28px;
+      text-shadow:0 0 10px rgba(212,175,55,.5);
     }
     h1{
-      margin:0 0 15px 0;font-size:48px;color:var(--gold-dark);
-      letter-spacing:3px;font-family:var(--font-serif);font-weight:700;
+      margin:20px 0 15px 0;font-size:52px;color:var(--maroon);
+      letter-spacing:4px;font-family:var(--font-serif);font-weight:700;
       text-transform:uppercase;
+      text-shadow:2px 2px 4px rgba(128,0,32,.2);
+      position:relative;z-index:2;
     }
     .subtitle{
-      color:var(--muted);margin:8px 0;font-size:18px;
-      font-weight:300;letter-spacing:4px;text-transform:uppercase;
+      color:var(--gold-dark);margin:10px 0;font-size:20px;
+      font-weight:600;letter-spacing:5px;text-transform:uppercase;
       font-family:var(--font-serif);
+      position:relative;z-index:2;
     }
     .invitation-text{
-      color:var(--muted);margin-top:20px;font-size:15px;
-      font-style:italic;line-height:1.8;max-width:90%;margin-left:auto;margin-right:auto;
+      color:var(--muted);margin-top:25px;font-size:16px;
+      font-style:italic;line-height:2;max-width:85%;margin-left:auto;margin-right:auto;
+      position:relative;z-index:2;
     }
 
-    /* Staggered Card Animations */
+    /* Video-like Staggered Card Animations */
     .card-animate{
       opacity:0;
-      transform:translateY(30px);
-      transition:opacity 0.6s ease, transform 0.6s ease;
+      transform:translateY(40px) scale(0.95);
+      transition:opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      filter:blur(5px);
     }
     .card-animate.visible{
       opacity:1;
-      transform:translateY(0);
+      transform:translateY(0) scale(1);
+      filter:blur(0);
     }
     .card-animate.slide-left{
-      transform:translateX(-30px);
+      transform:translateX(-40px) scale(0.95);
     }
     .card-animate.slide-left.visible{
-      transform:translateX(0);
+      transform:translateX(0) scale(1);
     }
     .card-animate.slide-right{
-      transform:translateX(30px);
+      transform:translateX(40px) scale(0.95);
     }
     .card-animate.slide-right.visible{
-      transform:translateX(0);
+      transform:translateX(0) scale(1);
     }
     .hero-animate{
       opacity:0;
-      transform:translateY(20px);
-      transition:opacity 0.8s ease, transform 0.8s ease;
+      transform:translateY(30px) scale(0.96);
+      transition:opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      filter:blur(4px);
     }
     .hero-animate.visible{
       opacity:1;
-      transform:translateY(0);
+      transform:translateY(0) scale(1);
+      filter:blur(0);
+    }
+    
+    /* Page flip effect for sections */
+    .section-divider{
+      opacity:0;
+      transform:scaleX(0);
+      transition:opacity 0.6s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .section-divider.visible{
+      opacity:1;
+      transform:scaleX(1);
     }
 
     /* Content layout */
@@ -116,23 +312,26 @@
       transition:opacity .3s ease;
     }
     .section-divider{
-      text-align:center;margin:35px 0;position:relative;
-      color:var(--gold);font-size:20px;
+      text-align:center;margin:40px 0;position:relative;
+      color:var(--gold);font-size:28px;
+      text-shadow:0 0 10px rgba(212,175,55,.5);
     }
     .section-divider::before,
     .section-divider::after{
-      content:'';position:absolute;top:50%;width:100px;
-      height:1px;background:linear-gradient(90deg, transparent, var(--gold), transparent);
+      content:'';position:absolute;top:50%;width:120px;
+      height:2px;background:linear-gradient(90deg, transparent, var(--gold), var(--maroon), var(--gold), transparent);
     }
     .section-divider::before{left:0}
     .section-divider::after{right:0}
     h2{
-      margin:0 0 25px 0;color:var(--gold-dark);font-size:28px;
-      font-family:var(--font-serif);font-weight:600;
-      letter-spacing:2px;text-align:center;text-transform:uppercase;
+      margin:0 0 30px 0;color:var(--maroon);font-size:30px;
+      font-family:var(--font-serif);font-weight:700;
+      letter-spacing:3px;text-align:center;text-transform:uppercase;
+      text-shadow:1px 1px 3px rgba(128,0,32,.1);
     }
     h2::before, h2::after{
-      content:'❦';color:var(--gold);margin:0 15px;font-size:18px;
+      content:'❀';color:var(--gold);margin:0 20px;font-size:22px;
+      text-shadow:0 0 8px rgba(212,175,55,.6);
     }
     p{
       margin:12px 0;color:var(--muted);line-height:1.9;
@@ -146,24 +345,34 @@
       margin:25px 0;padding:0;
     }
     .couple-names .name{
-      font-family:var(--font-serif);font-size:32px;
-      color:var(--gold-dark);font-weight:600;
-      letter-spacing:2px;margin:15px 0;
+      font-family:var(--font-serif);font-size:36px;
+      color:var(--maroon);font-weight:700;
+      letter-spacing:3px;margin:15px 0;
       text-transform:uppercase;
+      text-shadow:1px 1px 3px rgba(128,0,32,.15);
     }
     .couple-names .name-label{
-      font-size:13px;color:var(--muted);
-      letter-spacing:3px;text-transform:uppercase;
-      margin-bottom:8px;font-weight:400;
+      font-size:14px;color:var(--gold-dark);
+      letter-spacing:4px;text-transform:uppercase;
+      margin-bottom:10px;font-weight:600;
     }
     .and{
-      font-size:24px;color:var(--gold);
-      margin:20px 0;font-family:var(--font-serif);
-      font-style:italic;
+      font-size:32px;color:var(--gold);
+      margin:25px 0;font-family:var(--font-serif);
+      font-weight:700;
+      text-shadow:0 0 10px rgba(212,175,55,.5);
+      position:relative;
     }
+    .and::before, .and::after{
+      content:'❀';position:absolute;top:50%;
+      transform:translateY(-50%);
+      font-size:20px;opacity:0.7;
+    }
+    .and::before{right:calc(100% + 15px);}
+    .and::after{left:calc(100% + 15px);}
     .address{
-      font-size:14px;color:var(--muted);
-      line-height:1.8;margin-top:12px;
+      font-size:15px;color:var(--muted);
+      line-height:2;margin-top:15px;
       font-style:italic;
     }
 
@@ -171,29 +380,43 @@
       margin:35px auto;max-width:500px;
     }
     .schedule .item{
-      margin:25px 0;padding:20px;
-      border-top:1px solid rgba(212,175,55,.2);
-      border-bottom:1px solid rgba(212,175,55,.2);
+      margin:30px 0;padding:25px;
+      border-top:2px solid var(--gold);
+      border-bottom:2px solid var(--gold);
       text-align:center;
+      background:linear-gradient(180deg, rgba(212,175,55,.05), rgba(255,215,0,.02));
+      border-left:3px solid var(--maroon);
+      border-right:3px solid var(--maroon);
+      position:relative;
+    }
+    .schedule .item::before{
+      content:'❀';position:absolute;left:10px;top:50%;
+      transform:translateY(-50%);font-size:18px;color:var(--gold);opacity:0.5;
+    }
+    .schedule .item::after{
+      content:'❀';position:absolute;right:10px;top:50%;
+      transform:translateY(-50%);font-size:18px;color:var(--gold);opacity:0.5;
     }
     .date{
-      font-family:var(--font-serif);font-size:36px;
-      color:var(--gold-dark);font-weight:700;
-      line-height:1.2;margin-bottom:8px;
+      font-family:var(--font-serif);font-size:42px;
+      color:var(--maroon);font-weight:700;
+      line-height:1.2;margin-bottom:10px;
+      text-shadow:1px 1px 3px rgba(128,0,32,.1);
     }
     .date small{
-      display:block;font-size:14px;color:var(--muted);
-      letter-spacing:2px;text-transform:uppercase;
-      margin-top:5px;
+      display:block;font-size:16px;color:var(--gold-dark);
+      letter-spacing:3px;text-transform:uppercase;
+      margin-top:8px;font-weight:600;
     }
     .event-title{
-      font-family:var(--font-serif);font-size:20px;
-      color:var(--gold-dark);font-weight:600;
-      margin:12px 0 8px;letter-spacing:1px;
+      font-family:var(--font-serif);font-size:24px;
+      color:var(--maroon);font-weight:700;
+      margin:15px 0 10px;letter-spacing:2px;
+      text-transform:uppercase;
     }
     .event-details{
-      font-size:14px;color:var(--muted);
-      line-height:1.8;font-style:italic;
+      font-size:15px;color:var(--muted);
+      line-height:2;font-style:italic;
     }
 
     .contact-info{
@@ -203,61 +426,519 @@
       margin:8px 0;
     }
     .contact-name{
-      font-family:var(--font-serif);font-size:20px;
-      color:var(--gold-dark);font-weight:600;
-      margin-bottom:8px;
+      font-family:var(--font-serif);font-size:24px;
+      color:var(--maroon);font-weight:700;
+      margin-bottom:10px;
+      text-transform:uppercase;letter-spacing:2px;
     }
     .phone{
-      font-size:16px;color:var(--muted);
-      margin-top:10px;
+      font-size:18px;color:var(--gold-dark);
+      margin-top:12px;font-weight:600;
     }
 
     /* Footer */
     .footer{
-      padding:35px 40px;border-top:2px solid rgba(212,175,55,.2);
-      text-align:center;background:var(--cream);
+      padding:40px 50px;border-top:3px solid var(--gold);
+      text-align:center;background:var(--ivory);
       position:relative;z-index:2;
+      background-image:radial-gradient(circle at center, rgba(212,175,55,.05) 0%, transparent 70%);
     }
     .footer::before{
-      content:'❦';position:absolute;top:-12px;left:50%;
+      content:'🕉️';position:absolute;top:-18px;left:50%;
       transform:translateX(-50%);
-      background:var(--cream);padding:0 15px;
-      color:var(--gold);font-size:18px;
+      background:var(--ivory);padding:0 20px;
+      font-size:24px;
     }
     .bless{
-      color:var(--muted);font-size:15px;
-      font-style:italic;margin-bottom:10px;
+      color:var(--maroon);font-size:17px;
+      font-style:italic;margin-bottom:12px;
+      font-weight:500;
     }
     .copyright{
-      color:var(--muted);font-size:12px;
-      opacity:0.7;
+      color:var(--muted);font-size:13px;
+      opacity:0.8;
     }
 
-    /* small screens */
-    @media (max-width:750px){
-      .invite{width:95%;border-width:2px}
-      .hero{padding:35px 25px 30px}
-      h1{font-size:36px;letter-spacing:2px}
-      .subtitle{font-size:16px}
-      .content{padding:40px 30px 30px}
-      .couple-names .name{font-size:26px}
-      .date{font-size:30px}
-      .event-title{font-size:18px}
+    /* Mobile Optimizations */
+    @media (max-width:768px){
+      body{
+        padding:75px 10px 20px;
+        -webkit-text-size-adjust:100%;
+        -webkit-tap-highlight-color:transparent;
+      }
+      .invite{
+        width:100%;
+        max-width:100%;
+        border-width:3px;
+        margin:0 auto;
+      }
+      .invite::before,
+      .invite::after{
+        display:none;
+      }
+      .corner-decoration{
+        width:40px;height:40px;
+      }
+      .decorative-frame{
+        width:600px;height:600px;
+      }
+      .hero{
+        padding:40px 20px 35px;
+      }
+      .hero::before{
+        font-size:24px;top:10px;
+      }
+      .hero::after{
+        font-size:20px;padding:0 15px;
+      }
+      h1{
+        font-size:32px;
+        letter-spacing:2px;
+        margin:15px 0 10px;
+        line-height:1.2;
+      }
+      .subtitle{
+        font-size:16px;
+        letter-spacing:3px;
+        margin:8px 0;
+      }
+      .invitation-text{
+        font-size:14px;
+        margin-top:20px;
+        max-width:95%;
+        line-height:1.8;
+      }
+      .content{
+        padding:35px 20px 30px;
+      }
+      h2{
+        font-size:24px;
+        letter-spacing:2px;
+        margin:0 0 20px;
+      }
+      h2::before, h2::after{
+        font-size:18px;
+        margin:0 12px;
+      }
+      .couple-names .name-label{
+        font-size:12px;
+        letter-spacing:2px;
+      }
+      .couple-names .name{
+        font-size:24px;
+        letter-spacing:2px;
+        margin:12px 0;
+      }
+      .and{
+        font-size:24px;
+        margin:20px 0;
+      }
+      .and::before, .and::after{
+        font-size:16px;
+      }
+      .address{
+        font-size:13px;
+        margin-top:10px;
+        line-height:1.8;
+      }
+      .schedule{
+        max-width:100%;
+        margin:30px 0;
+      }
+      .schedule .item{
+        margin:20px 0;
+        padding:20px 15px;
+      }
+      .schedule .item::before,
+      .schedule .item::after{
+        font-size:14px;
+      }
+      .date{
+        font-size:32px;
+        margin-bottom:8px;
+      }
+      .date small{
+        font-size:13px;
+        letter-spacing:2px;
+      }
+      .event-title{
+        font-size:18px;
+        margin:12px 0 8px;
+        letter-spacing:1px;
+      }
+      .event-details{
+        font-size:13px;
+        line-height:1.8;
+      }
+      .section-divider{
+        margin:30px 0;
+        font-size:22px;
+      }
+      .section-divider::before,
+      .section-divider::after{
+        width:80px;
+      }
+      .contact-name{
+        font-size:20px;
+        letter-spacing:1px;
+      }
+      .phone{
+        font-size:16px;
+      }
+      p{
+        font-size:14px;
+        line-height:1.8;
+      }
+      .footer{
+        padding:30px 20px;
+      }
+      .footer::before{
+        font-size:20px;
+        padding:0 15px;
+      }
+      .bless{
+        font-size:15px;
+        margin-bottom:10px;
+      }
+      .copyright{
+        font-size:12px;
+      }
     }
-    @media (max-width:600px){
-      body{padding:15px}
-      .hero{padding:30px 20px 25px}
-      h1{font-size:28px;letter-spacing:1px}
-      .content{padding:30px 20px 25px}
-      .couple-names .name{font-size:22px}
-      .date{font-size:26px}
-      .schedule{max-width:100%}
+    
+    @media (max-width:480px){
+      body{
+        padding:75px 8px 15px;
+      }
+      .navbar{
+        padding:8px 12px;
+        flex-direction:column;
+        align-items:center;
+        gap:8px;
+      }
+      .navbar-brand{
+        width:100%;
+        justify-content:center;
+      }
+      .navbar-brand-text{
+        font-size:12px;letter-spacing:0.5px;
+      }
+      .navbar-brand-icon{
+        font-size:18px;
+      }
+      .countdown-timer{
+        padding:6px 10px;gap:6px;
+        width:100%;
+        justify-content:center;
+      }
+      .countdown-label{
+        font-size:8px;letter-spacing:0.5px;
+      }
+      .countdown-time{
+        gap:4px;
+      }
+      .countdown-unit{
+        padding:4px 5px;min-width:30px;
+      }
+      .countdown-number{
+        font-size:14px;
+      }
+      .countdown-label-unit{
+        font-size:6px;margin-top:1px;
+      }
+      .invite{
+        border-width:2px;
+        box-shadow:0 20px 50px rgba(0,0,0,.4),
+                   0 0 0 1px var(--gold),
+                   0 0 0 2px var(--maroon),
+                   0 0 0 3px var(--gold);
+      }
+      .corner-decoration{
+        width:30px;height:30px;
+        top:10px;left:10px;right:10px;bottom:10px;
+      }
+      .hero{
+        padding:30px 15px 25px;
+      }
+      .hero::before{
+        font-size:20px;
+        top:8px;
+      }
+      .hero::after{
+        font-size:18px;
+        padding:0 12px;
+        bottom:-12px;
+      }
+      h1{
+        font-size:26px;
+        letter-spacing:1.5px;
+        margin:12px 0 8px;
+      }
+      .subtitle{
+        font-size:14px;
+        letter-spacing:2px;
+        margin:6px 0;
+      }
+      .invitation-text{
+        font-size:13px;
+        margin-top:15px;
+        line-height:1.7;
+      }
+      .content{
+        padding:30px 15px 25px;
+      }
+      h2{
+        font-size:20px;
+        letter-spacing:1.5px;
+        margin:0 0 18px;
+      }
+      h2::before, h2::after{
+        font-size:16px;
+        margin:0 8px;
+      }
+      .couple-names{
+        margin:20px 0;
+      }
+      .couple-names .name-label{
+        font-size:11px;
+        letter-spacing:1.5px;
+        margin-bottom:8px;
+      }
+      .couple-names .name{
+        font-size:20px;
+        letter-spacing:1.5px;
+        margin:10px 0;
+      }
+      .and{
+        font-size:20px;
+        margin:15px 0;
+      }
+      .and::before, .and::after{
+        font-size:14px;
+      }
+      .and::before{right:calc(100% + 10px);}
+      .and::after{left:calc(100% + 10px);}
+      .address{
+        font-size:12px;
+        margin-top:8px;
+        line-height:1.7;
+      }
+      .schedule .item{
+        margin:18px 0;
+        padding:18px 12px;
+        border-left-width:2px;
+        border-right-width:2px;
+      }
+      .schedule .item::before,
+      .schedule .item::after{
+        font-size:12px;
+        left:8px;right:8px;
+      }
+      .date{
+        font-size:28px;
+        margin-bottom:6px;
+      }
+      .date small{
+        font-size:12px;
+        letter-spacing:1.5px;
+      }
+      .event-title{
+        font-size:16px;
+        margin:10px 0 6px;
+        letter-spacing:1px;
+      }
+      .event-details{
+        font-size:12px;
+        line-height:1.7;
+      }
+      .section-divider{
+        margin:25px 0;
+        font-size:18px;
+      }
+      .section-divider::before,
+      .section-divider::after{
+        width:60px;
+        height:1.5px;
+      }
+      .contact-name{
+        font-size:18px;
+        letter-spacing:1px;
+        margin-bottom:8px;
+      }
+      .contact-info p{
+        font-size:13px;
+        line-height:1.7;
+      }
+      .phone{
+        font-size:15px;
+        margin-top:10px;
+      }
+      .card{
+        margin-bottom:25px;
+      }
+      p{
+        font-size:13px;
+        line-height:1.7;
+        margin:10px 0;
+      }
+      .footer{
+        padding:25px 15px;
+      }
+      .footer::before{
+        font-size:18px;
+        padding:0 12px;
+        top:-14px;
+      }
+      .bless{
+        font-size:14px;
+        margin-bottom:8px;
+      }
+      .copyright{
+        font-size:11px;
+      }
     }
+    
+    @media (max-width:360px){
+      h1{font-size:22px}
+      .couple-names .name{font-size:18px}
+      .date{font-size:24px}
+      .content{padding:25px 12px 20px}
+      .hero{padding:25px 12px 20px}
+    }
+    
+    /* Mobile-specific optimizations */
+    @media (max-width:768px){
+      /* Improve touch targets */
+      .card-animate{
+        transform:translateY(30px) scale(0.96);
+      }
+      
+      /* Reduce animation intensity on mobile */
+      .hero-animate{
+        transform:translateY(20px) scale(0.97);
+        filter:blur(3px);
+      }
+      
+      /* Optimize decorative frame for mobile */
+      .decorative-frame{
+        width:500px;height:500px;
+        opacity:0.1;
+      }
+    }
+    
+    /* Landscape mobile optimization */
+    @media (max-width:768px) and (orientation:landscape){
+      body{
+        padding:5px;
+      }
+      .invite{
+        max-width:90%;
+      }
+      .hero{
+        padding:25px 20px;
+      }
+      .content{
+        padding:25px 20px;
+      }
+      h1{
+        font-size:28px;
+      }
+      .couple-names .name{
+        font-size:22px;
+      }
+      .schedule .item{
+        padding:15px 12px;
+        margin:15px 0;
+      }
+    }
+    
+    /* Prevent text selection issues on mobile */
+    @media (max-width:768px){
+      .invite{
+        -webkit-touch-callout:none;
+        -webkit-user-select:none;
+        user-select:none;
+      }
+      /* Allow text selection for important content */
+      p, .address, .event-details, .phone{
+        -webkit-user-select:text;
+        user-select:text;
+      }
+      
+      /* Mobile navbar */
+      .navbar{
+        padding:10px 15px;
+        flex-wrap:wrap;
+        gap:10px;
+      }
+      .navbar-brand{
+        flex:1;
+        min-width:150px;
+      }
+      .navbar-brand-text{
+        font-size:14px;letter-spacing:1px;
+      }
+      .navbar-brand-icon{
+        font-size:20px;
+      }
+      .countdown-timer{
+        padding:6px 10px;gap:8px;
+        flex:1;
+        min-width:fit-content;
+      }
+      .countdown-label{
+        font-size:9px;letter-spacing:1px;
+      }
+      .countdown-time{
+        gap:5px;
+      }
+      .countdown-unit{
+        padding:5px 6px;min-width:35px;
+      }
+      .countdown-number{
+        font-size:16px;
+      }
+      .countdown-label-unit{
+        font-size:7px;margin-top:2px;
+      }
+    }
+    
   </style>
 </head>
-<body>
+  <body>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span class="navbar-brand-icon">💑</span>
+      <span class="navbar-brand-text">Wedding Invitation</span>
+    </div>
+    <div class="countdown-timer">
+      <div class="countdown-label">Countdown to Wedding</div>
+      <div class="countdown-time">
+        <div class="countdown-unit">
+          <div class="countdown-number" id="days">00</div>
+          <div class="countdown-label-unit">Days</div>
+        </div>
+        <div class="countdown-unit">
+          <div class="countdown-number" id="hours">00</div>
+          <div class="countdown-label-unit">Hours</div>
+        </div>
+        <div class="countdown-unit">
+          <div class="countdown-number" id="minutes">00</div>
+          <div class="countdown-label-unit">Mins</div>
+        </div>
+        <div class="countdown-unit">
+          <div class="countdown-number" id="seconds">00</div>
+          <div class="countdown-label-unit">Secs</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="reveal-overlay"></div>
   <canvas id="particles-canvas"></canvas>
   <div class="invite" role="document" aria-label="Wedding Invitation">
+    <div class="decorative-frame"></div>
+    <div class="corner-decoration top-right"></div>
+    <div class="corner-decoration bottom-left"></div>
+    <div class="corner-decoration bottom-right"></div>
     <section class="hero">
       <div class="title hero-animate">
         <h1>Together Forever</h1>
@@ -270,34 +951,34 @@
       <div class="card card-animate">
         <div class="couple-section">
           <h2>Join Us in Celebration</h2>
-          <div class="couple-names">
-            <div>
-              <div class="name-label">Groom</div>
-              <div class="name">Amrendra Kumar</div>
-              <div class="address">Village - Majharia, Post - Maida<br/>Thana - Kothi, District - Sitamarhi</div>
-            </div>
-            <div class="and">&</div>
-            <div>
-              <div class="name-label">Bride</div>
-              <div class="name">Poonam</div>
-              <div class="address">Village - Jaisinghpur, Post - Maida<br/>Thana - Kothi, District - Sitamarhi</div>
-            </div>
+        <div class="couple-names">
+          <div>
+            <div class="name-label">वर</div>
+            <div class="name">Amrendra Kumar</div>
+            <div class="address">Village - Majharia, Post - Maida<br/>Thana - Kothi, District - Sitamarhi</div>
+          </div>
+          <div class="and">💑</div>
+          <div>
+            <div class="name-label">वधू</div>
+            <div class="name">Poonam</div>
+            <div class="address">Village - Jaisinghpur, Post - Maida<br/>Thana - Kothi, District - Sitamarhi</div>
           </div>
         </div>
-      </div>
+              </div>
+            </div>
 
-      <div class="section-divider">❦</div>
+      <div class="section-divider">❀ ❀ ❀</div>
 
       <div class="card card-animate">
         <h2>Wedding Ceremony</h2>
         <div class="schedule">
-          <div class="item">
+            <div class="item">
             <div class="date">24<small>November 2025</small></div>
-            <div class="event-title">Groom's Arrival</div>
+            <div class="event-title">Haldi Ceremony</div>
             <div class="event-details">Time: Evening 4:00 PM<br/>Venue: Jaisinghpur, Post - Maida</div>
-          </div>
+            </div>
 
-          <div class="item">
+            <div class="item">
             <div class="date">25<small>November 2025</small></div>
             <div class="event-title">Wedding Ceremony</div>
             <div class="event-details">Time: Evening 8:00 PM<br/>Venue: Same Location</div>
@@ -307,16 +988,16 @@
             <div class="date">26<small>November 2025</small></div>
             <div class="event-title">Vidaai & Return Journey</div>
             <div class="event-details">Time: As Per Schedule</div>
-          </div>
+        </div>
         </div>
       </div>
 
-      <div class="section-divider">❦</div>
+      <div class="section-divider">❀ ❀ ❀</div>
 
       <div class="card card-animate">
         <h2>Invitation Message</h2>
         <p>Following the path of wisdom, virtue, and compassion, we invite you to be part of the new chapter in our lives. Please join us to bless the newlyweds on this auspicious occasion.</p>
-      </div>
+        </div>
 
       <div class="card card-animate">
         <div class="contact-info">
@@ -324,7 +1005,7 @@
           <p>Village - Majharia, Post - Maida<br/>Thana - Kothi, District - Sitamarhi</p>
           <div class="phone">Mobile: <strong>8601058607</strong> / <strong>7084574598</strong></div>
         </div>
-      </div>
+        </div>
 
       <div class="card card-animate">
         <p style="font-size:13px;color:var(--muted);font-style:italic">Please arrive on time. For parking and accommodation assistance, please contact the numbers provided above.</p>
@@ -333,30 +1014,81 @@
     </div>
 
     <div class="footer">
-      <div class="bless">We seek your blessings</div>
+      <div class="bless">We seek your blessings • आपका आशीर्वाद चाहिए</div>
       <div class="copyright">© 2025 Amrendra Family</div>
     </div>
 
   </div>
 
   <script>
-    // Staggered Card Animations
+    // Countdown Timer
+    (function() {
+      // Set wedding date: November 24, 2025 at 4:00 PM (First event - Haldi Ceremony)
+      const weddingDate = new Date('2025-11-24T16:00:00').getTime();
+      
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+        
+        // Calculate time units
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        // Update display
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        
+        if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+        
+        // If countdown finished
+        if (distance < 0) {
+          if (daysEl) daysEl.textContent = '00';
+          if (hoursEl) hoursEl.textContent = '00';
+          if (minutesEl) minutesEl.textContent = '00';
+          if (secondsEl) secondsEl.textContent = '00';
+          
+          const labelEl = document.querySelector('.countdown-label');
+          if (labelEl) labelEl.textContent = 'Wedding Day! 🎉';
+        }
+      }
+      
+      // Update immediately and then every second
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+    
+    // Video-like Staggered Card Animations
     (function() {
       function initStaggeredAnimations() {
-        // Animate hero elements first
+        // Animate hero elements first with video-like timing
         const heroElements = document.querySelectorAll('.hero-animate');
         heroElements.forEach((el, index) => {
           setTimeout(() => {
             el.classList.add('visible');
-          }, 300 + (index * 150));
+          }, 1500 + (index * 200));
         });
 
-        // Animate all cards sequentially
+        // Animate section dividers
+        const dividers = document.querySelectorAll('.section-divider');
+        dividers.forEach((divider, index) => {
+          setTimeout(() => {
+            divider.classList.add('visible');
+          }, 2000 + (index * 400));
+        });
+
+        // Animate all cards sequentially with cinematic timing
         const cards = document.querySelectorAll('.card-animate');
         cards.forEach((card, index) => {
           setTimeout(() => {
             card.classList.add('visible');
-          }, 800 + (index * 300));
+          }, 1900 + (index * 350));
         });
       }
 
